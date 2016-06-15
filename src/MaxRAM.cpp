@@ -4,6 +4,7 @@
 
 VeritazzExtra arduboy(l1_table);
 
+static uint8_t huge[1024];
 
 /*---------------------------------------------------------------------------
  * setup
@@ -11,6 +12,7 @@ VeritazzExtra arduboy(l1_table);
 void
 setup(void)
 {
+	memset(huge, 0, sizeof(huge));
 	arduboy.initRandomSeed();
 	arduboy.begin();
 }
@@ -26,6 +28,8 @@ loop(void)
 		arduboy.clear();
 	} else
 		return;
+
+	memset(huge, 0, sizeof(huge));
 
 	arduboy.display();
 }

@@ -1,8 +1,6 @@
 #include "VeritazzExtra.h"
 #include "images.h"
 
-static uint16_t cdc_magic __attribute__((section(".noinit")));
-
 VeritazzExtra::VeritazzExtra(const uint8_t *xlate)
 {
 	this->xlate = xlate;
@@ -10,7 +8,7 @@ VeritazzExtra::VeritazzExtra(const uint8_t *xlate)
 
 void VeritazzExtra::begin()
 {
-	cdc_magic = 0x7777;
+	WDTCSR |= _BV(WDIE);
 
 	boot();
 
@@ -274,4 +272,10 @@ void VeritazzExtra::drawImageFrame(int16_t x, int16_t y, const uint8_t *img,
 	}
 
 	drawPackedImage(x, y, img + ioffset, w, h, iflags);
+}
+
+static uint16_t cdc_magic __attribute__((section(".noinit")));
+
+ISR(WDT_vect) {
+	cdc_magic = 0x7777;
 }
